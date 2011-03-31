@@ -18,6 +18,16 @@ class Tsoha < Sinatra::Base
     erb :index
   end
 
+  get '/login' do
+    # erb :login
+    "login page"
+  end
+
+  get '/register' do
+    # erb :register
+    "register page"
+  end
+
   get '/sessioon/:arvo' do
     session[:muuttuja] = params[:arvo]
     redirect '/'
