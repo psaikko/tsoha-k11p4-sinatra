@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'sinatra'
+require 'erb'
 require 'haml'
 require 'config/init'
 
@@ -10,7 +11,6 @@ class Tsoha < Sinatra::Base
   set :public, File.dirname(__FILE__) + "/public"
 
   get '/' do
-    "Testing"
     haml :index
   end
 
