@@ -1,7 +1,6 @@
 require 'rubygems'
 require 'sinatra'
-require 'erb'
-
+require 'haml'
 require 'config/init'
 
 require 'models/user'
@@ -15,17 +14,15 @@ class Tsoha < Sinatra::Base
     @esimerkkimuuttuja = "tämä on muuttuja"
     @sessiosta_muuttujaan = session[:muuttuja]
     @testmodelin_arvot = User.all
-    erb :index
+    haml :index
   end
 
   get '/login' do
-    # erb :login
-    "login page"
+    haml :login
   end
 
   get '/register' do
-    # erb :register
-    "register page"
+    haml :register
   end
 
   get '/sessioon/:arvo' do
