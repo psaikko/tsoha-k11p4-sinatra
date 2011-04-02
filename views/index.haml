@@ -3,10 +3,10 @@
 %a{:href => "/login"} Login
 %a{:href => "/register"} Register
 
-%p <%= @esimerkkimuuttuja %>
+%p=@esimerkkimuuttuja
 
 %p Sessioon tallennettuna "<%= @sessiosta_muuttujaan %>"
 
 <% @testmodelin_arvot.each do |arvo| %>
-    <p><%= arvo.name %></p>
+    %p=arvo.name
 <% end %>
