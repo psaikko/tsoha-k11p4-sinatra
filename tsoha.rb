@@ -11,18 +11,19 @@ class Tsoha < Sinatra::Base
   set :public, File.dirname(__FILE__) + "/public"
 
   get '/' do
+    "Testing"
     @esimerkkimuuttuja = "tämä on muuttuja"
     @sessiosta_muuttujaan = session[:muuttuja]
     @testmodelin_arvot = User.all
-    haml :index
+    # haml :index
   end
 
   get '/login' do
-    haml :login
+    # haml :login
   end
 
   get '/register' do
-    haml :register
+    # haml :register
   end
 
   get '/sessioon/:arvo' do
