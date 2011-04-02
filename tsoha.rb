@@ -3,7 +3,6 @@ require 'sinatra'
 require 'haml'
 require 'config/init'
 
-require 'models/user'
 
 class Tsoha < Sinatra::Base
 
@@ -12,18 +11,15 @@ class Tsoha < Sinatra::Base
 
   get '/' do
     "Testing"
-    @esimerkkimuuttuja = "tämä on muuttuja"
-    @sessiosta_muuttujaan = session[:muuttuja]
-    @testmodelin_arvot = User.all
-    # haml :index
+    haml :index
   end
 
   get '/login' do
-    # haml :login
+    haml :login
   end
 
   get '/register' do
-    # haml :register
+    haml :register
   end
 
   get '/sessioon/:arvo' do
