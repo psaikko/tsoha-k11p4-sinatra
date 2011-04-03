@@ -15,4 +15,4 @@ class Message
   has n, :replies
 end
 
-User.auto_migrate! unless User.storage_exists?
+Message.auto_migrate! unless Message.storage_exists?

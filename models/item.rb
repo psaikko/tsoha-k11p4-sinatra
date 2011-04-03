@@ -15,4 +15,4 @@ class Item
   belongs_to :user
 end
 
-User.auto_migrate! unless User.storage_exists?
+Item.auto_migrate! unless Item.storage_exists?

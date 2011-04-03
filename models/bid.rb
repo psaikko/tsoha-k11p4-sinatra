@@ -11,4 +11,4 @@ class Bid
   belongs_to :item
 end
 
-User.auto_migrate! unless User.storage_exists?
+Bid.auto_migrate! unless Bid.storage_exists?
