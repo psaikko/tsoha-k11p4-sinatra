@@ -1,6 +1,5 @@
 require 'rubygems'
 require 'sinatra'
-require 'erb'
 require 'haml'
 
 require 'config/init'
@@ -12,14 +11,14 @@ require 'models/message'
 
 class Tsoha < Sinatra::Base
   get '/' do
-    # haml :index
+    haml :index
   end
 
   get '/login' do
-    # haml :login
+    haml :login
   end
 
   get '/register' do
-    # haml :register
+    haml :register
   end
 end
