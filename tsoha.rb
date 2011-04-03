@@ -2,14 +2,15 @@ require 'rubygems'
 require 'sinatra'
 require 'erb'
 require 'haml'
+
 require 'config/init'
 
+require 'models/bid'
+require 'models/item'
+require 'models/user'
+require 'models/message'
 
 class Tsoha < Sinatra::Base
-
-  enable :sessions
-  set :public, File.dirname(__FILE__) + "/public"
-
   get '/' do
     haml :index
   end
@@ -21,10 +22,4 @@ class Tsoha < Sinatra::Base
   get '/register' do
     haml :register
   end
-
-  get '/sessioon/:arvo' do
-    session[:muuttuja] = params[:arvo]
-    redirect '/'
-  end
-
 end
