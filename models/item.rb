@@ -11,8 +11,8 @@ class Item
   property :expires_At, DateTime
   has n, :bids
   has n, :messages
-  has n, :bidders, :through => :bids
+  has n, :bidders, 'User', :through => :bids
   belongs_to :user
 end
 
-Item.auto_migrate! unless Item.storage_exists?
+# Item.auto_migrate! unless Item.storage_exists?

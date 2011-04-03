@@ -9,6 +9,9 @@ require 'models/item'
 require 'models/user'
 require 'models/message'
 
+DataMapper.finalize
+DataMapper.auto_upgrade!
+
 class Tsoha < Sinatra::Base
   get '/' do
     haml :index

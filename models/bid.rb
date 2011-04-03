@@ -7,8 +7,8 @@ class Bid
   property :id, Serial, :key => true
   property :amount, Integer 
   property :made_at, DateTime
-  belongs_to :user
+  belongs_to :bidder, 'User'
   belongs_to :item
 end
 
-Bid.auto_migrate! unless Bid.storage_exists?
+# Bid.auto_migrate! unless Bid.storage_exists?
