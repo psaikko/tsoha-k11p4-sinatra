@@ -2,8 +2,8 @@
 source "http://rubygems.org"
 
 gem "sinatra"
-gem "haml"
 gem "data_mapper"
+gem "haml"
 
 group :production do
   gem "dm-postgres-adapter"
