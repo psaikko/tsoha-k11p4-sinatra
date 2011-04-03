@@ -5,7 +5,7 @@ require 'dm-migrations'
 class Bid
   include DataMapper::Resource
   property :id, Serial, :key => true
-  property :amount, Integrer 
+  property :amount, Integer 
   property :made_at, DateTime
   belongs_to :user
   belongs_to :item
