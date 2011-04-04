@@ -1,26 +1,27 @@
 require 'rubygems'
 require 'sinatra'
-require 'erb'
+require 'haml'
 
 require 'config/init'
 
+require 'models/bid'
+require 'models/item'
 require 'models/user'
+require 'models/message'
+
+DataMapper.finalize
+DataMapper.auto_upgrade!
 
 class Tsoha < Sinatra::Base
-
-  enable :sessions
-  set :public, File.dirname(__FILE__) + "/public"
-
   get '/' do
-    @esimerkkimuuttuja = "tämä on muuttuja"
-    @sessiosta_muuttujaan = session[:muuttuja]
-    @testmodelin_arvot = User.all
-    erb :index
+    haml :index
   end
 
-  get '/sessioon/:arvo' do
-    session[:muuttuja] = params[:arvo]
-    redirect '/'
+  get '/login' do
+    haml :login
   end
 
+  get '/register' do
+    haml :register
+  end
 end

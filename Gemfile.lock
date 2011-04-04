@@ -58,6 +58,7 @@ GEM
     eventmachine (0.12.10)
     extlib (0.9.15)
     fastercsv (1.5.4)
+    haml (3.0.25)
     heroku (1.18.3)
       launchy (~> 0.3.2)
       rest-client (< 1.7.0, >= 1.4.0)
@@ -88,6 +89,7 @@ DEPENDENCIES
   data_mapper
   dm-postgres-adapter
   dm-sqlite-adapter
+  haml
   heroku
   sinatra
   thin
