@@ -21,6 +21,10 @@ class Tsoha < Sinatra::Base
     haml :login
   end
 
+  post '/login' do
+    redirect '/' # authenticate username, password here somehow
+  end
+
   get '/register' do
     haml :register
   end
