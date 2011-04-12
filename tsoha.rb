@@ -33,4 +33,8 @@ class Tsoha < Sinatra::Base
     redirect '/'
   end
 
+  get '/listitem' do
+    haml :listitem
+  end
+
 end
