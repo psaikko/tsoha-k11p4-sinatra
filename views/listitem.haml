@@ -1,0 +1,15 @@
+%p
+  List new item
+%form{:method => "post", :action => "/listitem"}
+  %p 
+    Item name
+    %input{:type => "text", :name => "name"}
+  %p
+    Starting price
+    %input{:type => "text", :name => "price"}
+  %p
+    Item description
+  %p
+    %textarea{:rows => 10, :cols => 40, :name => "description"}
+  %input{:type => "submit", :value => "Create"}
+
