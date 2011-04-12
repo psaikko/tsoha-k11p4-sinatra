@@ -1,5 +1,7 @@
 %p 
   Account creation
+- if @error != nil 
+  %p= @error
 %form{:method => "post", :action => "/register"}
   %p 
     Username

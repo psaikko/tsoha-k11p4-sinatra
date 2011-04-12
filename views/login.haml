@@ -1,5 +1,7 @@
 %p  
   Login
+- if @error != nil
+  %p= @error
 %form{:method => "post", :action => "/login"}
   %p 
     Username

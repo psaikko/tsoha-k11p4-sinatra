@@ -13,6 +13,10 @@ class User
   has n, :recieved_messages, 'Message'
   has n, :items
   has n, :bids
+
+  def self.exists(username)
+    self.first(:name => username) != nil
+  end
 end
 
-# User.auto_migrate! unless User.storage_exists?
+

@@ -1,4 +1,7 @@
 %p 
-  index.erb
-  etusivu
-
+  Etusivu
+- if @name != nil
+  %p= "Welcome " + @name
+%p Registered Users:
+- @users.each do |user|
+  %p= user.name
