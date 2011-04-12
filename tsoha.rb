@@ -66,4 +66,9 @@ class Tsoha < Sinatra::Base
     redirect '/'
   end
 
+  get '/logout' do
+    session['id'] = nil
+    redirect '/'
+  end
+
 end
