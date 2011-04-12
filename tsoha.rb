@@ -52,8 +52,8 @@ class Tsoha < Sinatra::Base
       haml :register
     else
       if params[:password] == params[:password2]
-        @user = User.create(:name => params[:username], :password => params[:password])
-        session['id'] = @user.id
+        user = User.create(:name => params[:username], :password => params[:password])
+        session['id'] = user.id
         redirect '/'
       else
         @msg = "Passwords do not match"
@@ -93,18 +93,34 @@ class Tsoha < Sinatra::Base
     redirect '/'
   end
 
-  get '/items/:id' do
-    @item = Item.first(:id => Integer(params[:id]))
+  get '/items/:item_id' do
+    @item = Item.first(:id => Integer(params[:item_id]))
     if @item == nil
       @msg = "Item not found"
-      redirect '/'
+      haml :index
     else    
       haml :item
     end
   end
 
-  post '/item' do
+  post '/bid/:item_id' do
+    @item = Item.first(:id => Integer(params[:item_id]))
+    begin
+      price = Float(params[:amount])
+    rescue ArgumentError
+      @msg = "Invalid bid amount"
+      haml :item
+    end
     
+    if price != nil && price < @item.current_price
+      @msg = "Bid too small"
+      haml :item
+    else
+      user = User.first(:id => session['id'])
+      Bid.create(:amount => price, :made_at => Time.now, :bidder => user, :item => @item)
+      @msg = "Bid successful!"
+      haml :item
+    end   
   end
 
 end

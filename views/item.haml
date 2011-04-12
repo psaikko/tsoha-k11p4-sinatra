@@ -19,10 +19,12 @@
       %tr= bid.amount
       %tr #{bid.bidder.name}
       %tr= bid.made_at
-      
-%p Make a bid:
+%p 
+  Current price: 
+  #{@item.current_price}
 - if @name != nil
-  %form{:method => "post", :action => "/item"}
+  %p Make a bid:
+  %form{:method => "post", :action => "/bid/" + @item.id.to_s}
     %input{:type => "text", :width => "10", :name => "amount"}
     %input{:type => "submit", :value => "Bid!"}
   
