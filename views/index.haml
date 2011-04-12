@@ -11,11 +11,11 @@
     %th Current price
   - @items.each do |item|
     %tr
-      %td #{item.name}
+      %td 
+        %a{:href => "/items/" + item.id.to_s} #{item.name}
       %td #{item.user.name}
       %td #{item.expires_at.to_s}
       %td #{item.current_price}
-        
       
 %p Registered users:
 - @users.each do |user|

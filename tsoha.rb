@@ -37,7 +37,7 @@ class Tsoha < Sinatra::Base
       session['id'] = @user.id
       redirect '/'
     else
-      @error = "Invalid username or password"
+      @msg = "Invalid username or password"
       haml :login
     end
   end
@@ -48,7 +48,7 @@ class Tsoha < Sinatra::Base
 
   post '/register' do
     if User.exists(params[:username])
-      @error = "Username taken"
+      @msg = "Username taken"
       haml :register
     else
       if params[:password] == params[:password2]
@@ -56,7 +56,7 @@ class Tsoha < Sinatra::Base
         session['id'] = @user.id
         redirect '/'
       else
-        @error = "Passwords do not match"
+        @msg = "Passwords do not match"
         haml :register
       end
     end
@@ -74,12 +74,12 @@ class Tsoha < Sinatra::Base
     begin
       @price = Float(params[:price])
     rescue ArgumentError
-      @error = "Invalid price"
+      @msg = "Invalid price"
       haml :listitem
     end
     
     if params[:name] == nil
-      @error = "Name unspecified"
+      @msg = "Name unspecified"
       haml :listitem    
     else
       user = User.first(:id => session['id'])
@@ -91,6 +91,20 @@ class Tsoha < Sinatra::Base
   get '/logout' do
     session['id'] = nil
     redirect '/'
+  end
+
+  get '/items/:id' do
+    @item = Item.first(:id => Integer(params[:id]))
+    if @item == nil
+      @msg = "Item not found"
+      redirect '/'
+    else    
+      haml :item
+    end
+  end
+
+  post '/item' do
+    
   end
 
 end

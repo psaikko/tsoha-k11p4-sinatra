@@ -1,0 +1,29 @@
+%p
+  Name: 
+  #{@item.name}
+%p Description
+%p #{@item.text}
+%p 
+  Sold by:
+  #{@item.user.name}
+%p
+%table{:border => "1"}
+  %tr
+    %th{:colspan => "3"} Bids on this item
+  %tr
+    %th Amount
+    %th Bidder
+    %th Time
+  - @item.bids.all(:order => [:amount.desc]).each do |bid|
+    %tr
+      %tr= bid.amount
+      %tr #{bid.bidder.name}
+      %tr= bid.made_at
+      
+%p Make a bid:
+- if @name != nil
+  %form{:method => "post", :action => "/item"}
+    %input{:type => "text", :width => "10", :name => "amount"}
+    %input{:type => "submit", :value => "Bid!"}
+  
+

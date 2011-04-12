@@ -22,4 +22,8 @@ class Item
       bids.max(:amount).amount
     end
   end
+  
+  def expried
+    Time.now > expires_at
+  end
 end
