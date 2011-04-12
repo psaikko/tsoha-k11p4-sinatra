@@ -28,4 +28,9 @@ class Tsoha < Sinatra::Base
   get '/register' do
     haml :register
   end
+
+  post '/register' do
+    redirect '/'
+  end
+
 end

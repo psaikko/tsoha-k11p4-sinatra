@@ -1,5 +1,13 @@
 %p 
-  register.erb
-  registration page
-%p
-  %a{:href => "/"} to main page
+  Account creation
+%form{:method => "post", :action => "/register"}
+  %p 
+    Username
+    %input{:type => "text", :name => "username"}
+  %p
+    Password
+    %input{:type => "password", :name => "password"}
+  %p
+    Repeat password
+    %input{:type => "password", :name => "password2"}
+  %input{:type => "submit", :value => "Register"}
