@@ -1,11 +1,22 @@
 %p 
-  Etusivu
 - if @name != nil
   %p= "Welcome " + @name
-%p Items:
-- @items.each do |item|
-  %p= item.name
-  %p= item.text
+%table{:border => "1"}
+  %tr
+    %th{:colspan => "4"} Auction listings
+  %tr
+    %th Item name
+    %th Owner
+    %th Expires
+    %th Current price
+  - @items.each do |item|
+    %tr
+      %td #{item.name}
+      %td #{item.user.name}
+      %td #{item.expires_at.to_s}
+      %td #{item.current_price}
+        
+      
 %p Registered users:
 - @users.each do |user|
-  %p= user.name
+  %p #{user.name}

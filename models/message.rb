@@ -7,7 +7,7 @@ class Message
   property :id, Serial, :key => true
   property :title, String, :required => true
   property :contents, Text, :required => true
-  property :sent_at, DateTime
+  property :sent_at, Time
   belongs_to :sender, 'User'
   belongs_to :recipient, 'User'
   belongs_to :item, :required => false

@@ -15,11 +15,14 @@ DataMapper.auto_migrate!
 class Tsoha < Sinatra::Base
   enable :sessions
 
-  get '/' do
+  before do
     if session['id'] != nil
       @name = User.first(:id => session['id']).name
     end
-    @items = Item.all
+  end
+
+  get '/' do
+    @items = Item.all(:order => [:expires_at.asc])
     @users = User.all
     haml :index
   end
