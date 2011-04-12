@@ -10,5 +10,3 @@ class Bid
   belongs_to :bidder, 'User'
   belongs_to :item
 end
-
-# Bid.auto_migrate! unless Bid.storage_exists?
