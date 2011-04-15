@@ -4,7 +4,7 @@ require 'dm-migrations'
 
 class Message
   include DataMapper::Resource
-  property :id, Serial, :key => true
+  property :message_id, Serial, :key => true
   property :title, String, :required => true
   property :contents, Text, :required => true
   property :sent_at, Time

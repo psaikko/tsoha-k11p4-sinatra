@@ -4,7 +4,7 @@ require 'dm-migrations'
 
 class User
   include DataMapper::Resource
-  property :id, Serial, :key => true
+  property :user_id, Serial, :key => true
   property :name, String, :required => true, :unique => true
   property :password, String, :required => true
   property :admin, Boolean, :default => false

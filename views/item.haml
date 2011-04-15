@@ -16,15 +16,15 @@
     %th Time
   - @item.bids.all(:order => [:amount.desc]).each do |bid|
     %tr
-      %tr= bid.amount
-      %tr #{bid.bidder.name}
-      %tr= bid.made_at
+      %td #{bid.amount}
+      %td #{bid.user.name}
+      %td #{bid.made_at}
 %p 
   Current price: 
   #{@item.current_price}
 - if @name != nil
   %p Make a bid:
-  %form{:method => "post", :action => "/bid/" + @item.id.to_s}
+  %form{:method => "post", :action => "/bid/" + @item.item_id.to_s}
     %input{:type => "text", :width => "10", :name => "amount"}
     %input{:type => "submit", :value => "Bid!"}
   

@@ -17,7 +17,7 @@ class Tsoha < Sinatra::Base
 
   before do
     if session['id'] != nil
-      @name = User.first(:id => session['id']).name
+      @name = User.first(:user_id => session['id']).name
     end
   end
 
@@ -34,7 +34,7 @@ class Tsoha < Sinatra::Base
   post '/login' do
     @user = User.first(:name => params[:username], :password => params[:password])
     if @user != nil
-      session['id'] = @user.id
+      session['id'] = @user.user_id
       redirect '/'
     else
       @msg = "Invalid username or password"
@@ -53,7 +53,7 @@ class Tsoha < Sinatra::Base
     else
       if params[:password] == params[:password2]
         user = User.create(:name => params[:username], :password => params[:password])
-        session['id'] = user.id
+        session['id'] = user.user_id
         redirect '/'
       else
         @msg = "Passwords do not match"
@@ -82,7 +82,7 @@ class Tsoha < Sinatra::Base
       @msg = "Name unspecified"
       haml :listitem    
     else
-      user = User.first(:id => session['id'])
+      user = User.first(:user_id => session['id'])
       Item.create(:name => params[:name], :start_price => params[:price], :text => params[:description], :created_at => Time.now, :expires_at => Time.now + 604800, :user => user)
       redirect '/'
     end
@@ -94,7 +94,7 @@ class Tsoha < Sinatra::Base
   end
 
   get '/items/:item_id' do
-    @item = Item.first(:id => Integer(params[:item_id]))
+    @item = Item.first(:item_id => Integer(params[:item_id]))
     if @item == nil
       @msg = "Item not found"
       haml :index
@@ -104,7 +104,7 @@ class Tsoha < Sinatra::Base
   end
 
   post '/bid/:item_id' do
-    @item = Item.first(:id => Integer(params[:item_id]))
+    @item = Item.first(:item_id => Integer(params[:item_id]))
     begin
       price = Float(params[:amount])
     rescue ArgumentError
@@ -112,12 +112,21 @@ class Tsoha < Sinatra::Base
       haml :item
     end
     
+    if price == nil
+      @msg = "Must specify a price"
+      haml :item
+    end
+    
     if price != nil && price < @item.current_price
       @msg = "Bid too small"
       haml :item
     else
-      user = User.first(:id => session['id'])
-      Bid.create(:amount => price, :made_at => Time.now, :bidder => user, :item => @item)
+      user = User.first(:user_id => session['id'])
+      bid = Bid.create(:amount => price, :made_at => Time.now, :user => user, :item => @item)
+      @item.bids << bid
+      @item.save
+      user.bids << bid
+      user.save
       @msg = "Bid successful!"
       haml :item
     end   
