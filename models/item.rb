@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'dm-core'
 require 'dm-migrations'
+require 'dm-aggregates'
 
 class Item
   include DataMapper::Resource
@@ -18,7 +19,7 @@ class Item
     if bids.count == 0
       start_price
     else
-      bids.all.max(:amount)
+      bids.max(:amount)
     end
   end
   
