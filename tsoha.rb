@@ -117,7 +117,7 @@ class Tsoha < Sinatra::Base
       haml :item
     end
     
-    if price != nil && price < @item.current_price
+    if price != nil && price <= @item.current_price
       @msg = "Bid too small"
       haml :item
     else

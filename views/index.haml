@@ -1,9 +1,8 @@
 %p 
 - if @name != nil
   %p= "Welcome " + @name
-%table{:border => "1"}
-  %tr
-    %th{:colspan => "4"} Auction listings
+%h2 Auction listings:
+%table.items{:border => "1"}
   %tr
     %th Item name
     %th Owner
@@ -16,7 +15,7 @@
       %td #{item.user.name}
       %td #{item.expires_at.to_s}
       %td #{item.current_price}
-      
-%p Registered users:
-- @users.each do |user|
-  %p #{user.name}
+%h3 Registered users:
+%ul
+  - @users.each do |user|
+    %li #{user.name}

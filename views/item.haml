@@ -1,31 +1,26 @@
-%p
-  Name: 
-  #{@item.name}
-%p Description
+ 
+%h2 #{@item.name}
+%h2 Description
 %p #{@item.text}
-%p 
-  Sold by:
-  #{@item.user.name}
-%p
+%h3 Sold by:
+#{@item.user.name}
+%h2 Bids:
 %table{:border => "1"}
-  %tr
-    %th{:colspan => "3"} Bids on this item
   %tr
     %th Amount
     %th Bidder
     %th Time
   - @item.bids.all(:order => [:amount.desc]).each do |bid|
     %tr
-      %td #{bid.amount}
+      %td #{bid.amount.to_s}
       %td #{bid.user.name}
       %td #{bid.made_at}
-%p 
-  Current price: 
-  #{@item.current_price}
+%h3 Current price: #{@item.current_price}
 - if @name != nil
   %p Make a bid:
   %form{:method => "post", :action => "/bid/" + @item.item_id.to_s}
     %input{:type => "text", :width => "10", :name => "amount"}
-    %input{:type => "submit", :value => "Bid!"}
+    %p
+      %input{:type => "submit", :value => "Bid!"}
   
 

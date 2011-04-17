@@ -1,15 +1,10 @@
-%p
-  List new item
+%h2 List new item:
 %form{:method => "post", :action => "/listitem"}
-  %p 
-    Item name
-    %input{:type => "text", :name => "name"}
-  %p
-    Starting price
-    %input{:type => "text", :name => "price"}
-  %p
-    Item description
-  %p
-    %textarea{:rows => 10, :cols => 40, :name => "description"}
+  %h3 Item name
+  %input{:type => "text", :name => "name"}
+  %h3 Starting price
+  %input{:type => "text", :name => "price"}
+  %h3 Item description
+  %textarea{:rows => 10, :cols => 40, :name => "description"}
   %input{:type => "submit", :value => "Create"}
 

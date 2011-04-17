@@ -1,11 +1,9 @@
-%html(xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en")
+%html
   %head
-    %link{:rel => "stylesheet", :href => "/css/style.css", :type => "text/css"}
-    %title 
-      AuctionSite
+    %link{:rel => "stylesheet", :type => "text/css", :href => "/css/style.css"}
+    %title AuctionSite
   %body
-    %h1 
-      AuctionSite
+    %h1 AuctionSite
     %p
       %a{:href => "/login"} [Login] 
       %a{:href => "/register"} [Register]
@@ -15,5 +13,5 @@
         %a{:href => "/listitem"} [Add Item]
     %div
       - if @msg != nil 
-        %p= @msg
+        %p.error= @msg
       =yield

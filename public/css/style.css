@@ -1,3 +1,11 @@
 h1 {
-    color: red;
+  color: red;
+}
+
+table {
+  background-color: #99CCFF;
+}
+
+.error {
+  color: red
 }
