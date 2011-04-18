@@ -16,9 +16,13 @@ class Tsoha < Sinatra::Base
   set :public, File.dirname(__FILE__) + "/public"
   enable :sessions
 
+  if !User.exists("admin")
+    User.create(:name => "admin", :password => "admin", :admin => true)
+  end
+
   before do
     if session['id'] != nil
-      @name = User.first(:user_id => session['id']).name
+      @user = User.first(:user_id => session['id'])
     end
   end
 
@@ -104,7 +108,12 @@ class Tsoha < Sinatra::Base
     end
   end
 
-  post '/bid/:item_id' do
+  post '/items/delete/:item_id' do
+    item = Item.first(:item_id => Integer(params[:item_id]))
+    item.delete
+  end
+
+  post '/items/bid/:item_id' do
     @item = Item.first(:item_id => Integer(params[:item_id]))
     begin
       price = Float(params[:amount])
@@ -132,5 +141,4 @@ class Tsoha < Sinatra::Base
       haml :item
     end   
   end
-
 end

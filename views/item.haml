@@ -16,9 +16,9 @@
       %td #{bid.user.name}
       %td #{bid.made_at}
 %h3 Current price: #{@item.current_price}
-- if @name != nil
+- if !@user.nil? && !@user.name.nil?
   %p Make a bid:
-  %form{:method => "post", :action => "/bid/" + @item.item_id.to_s}
+  %form{:method => "post", :action => "/items/bid/" + @item.item_id.to_s}
     %input{:type => "text", :width => "10", :name => "amount"}
     %p
       %input{:type => "submit", :value => "Bid!"}

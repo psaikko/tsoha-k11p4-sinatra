@@ -8,7 +8,7 @@
       %a{:href => "/login"} [Login] 
       %a{:href => "/register"} [Register]
       %a{:href => "/"} [Main Page]
-      - if @name != nil
+      - if @user != nil
         %a{:href => "/logout"} [Logout]
         %a{:href => "/listitem"} [Add Item]
     %div
