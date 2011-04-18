@@ -47,6 +47,11 @@ class Tsoha < Sinatra::Base
     end
   end
 
+  get '/logout' do
+    session['id'] = nil
+    redirect '/'
+  end
+
   get '/register' do
     haml :register
   end
@@ -93,11 +98,6 @@ class Tsoha < Sinatra::Base
     end
   end
 
-  get '/logout' do
-    session['id'] = nil
-    redirect '/'
-  end
-
   get '/items/:item_id' do
     @item = Item.first(:item_id => Integer(params[:item_id]))
     if @item == nil
@@ -111,6 +111,7 @@ class Tsoha < Sinatra::Base
   post '/items/delete/:item_id' do
     item = Item.first(:item_id => Integer(params[:item_id]))
     item.delete
+    redirect '/'
   end
 
   post '/items/bid/:item_id' do
