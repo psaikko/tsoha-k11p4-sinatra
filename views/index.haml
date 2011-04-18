@@ -16,6 +16,5 @@
       %td #{item.expires_at.to_s}
       %td #{item.current_price}
 %h3 Registered users:
-%ul
-  - @users.each do |user|
-    %li #{user.name}
+- @users.each do |user|
+  #{user.name}

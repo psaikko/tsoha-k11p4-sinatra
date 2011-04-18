@@ -10,9 +10,10 @@ require 'models/user'
 require 'models/message'
 
 DataMapper.finalize
-DataMapper.auto_migrate!
+DataMapper.auto_upgrade!
 
 class Tsoha < Sinatra::Base
+  set :public, File.dirname(__FILE__) + "/public"
   enable :sessions
 
   before do
