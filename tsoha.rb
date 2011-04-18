@@ -108,9 +108,9 @@ class Tsoha < Sinatra::Base
     end
   end
 
-  post '/items/delete/:item_id' do
-    item = Item.first(:item_id => Integer(params[:item_id]))
-    item.delete
+  get '/items/delete/:item_id' do
+    del_item = Item.first(:item_id => Integer(params[:item_id]))
+    del_item.destroy
     redirect '/'
   end
 
