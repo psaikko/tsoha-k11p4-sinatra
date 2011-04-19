@@ -12,7 +12,12 @@ table {
 }
 
 table, th, td {
-  border: 1px solid black;
+  border: 2px solid black;
+}
+
+td {
+  max-width: 500px;
+  word-wrap: break-word;
 }
 
 .error {

@@ -22,3 +22,31 @@
     %input{:type => "text", :width => "10", :name => "amount"}
     %p
       %input{:type => "submit", :value => "Bid!"}
+
+%h3 Messages
+- if @item.messages.count > 0
+  %table
+    %tr
+      %th Date
+      %th Sender
+      %th Title
+    - @item.messages.all(:order => [:sent_at.asc]).each do |msg|
+      %tr
+        %td #{msg.sent_at.to_s}
+        %td #{msg.sender.name}
+        %td #{msg.title}
+      %tr
+        %td
+        %td{:colspan => "2"} #{msg.contents}
+-else
+  %p No messages to display
+      
+- if !@user.nil? && !@user.name.nil?
+  %h3 Leave a message
+  %p Title:
+  %form{:method => "post", :action => "/items/msg/" + @item.item_id.to_s}
+    %input{:type => "text", :width => "10", :name => "title"}
+    %p
+      %textarea{:rows => 5, :cols => 30, :name => "contents"}
+    %p
+      %input{:type => "submit", :value => "Send"}

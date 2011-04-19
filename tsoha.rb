@@ -114,6 +114,25 @@ class Tsoha < Sinatra::Base
     redirect '/'
   end
 
+  post '/items/msg/:item_id' do
+    @item = Item.first(:item_id => Integer(params[:item_id]))
+    title = params[:title]
+    contents = params[:contents]
+    if !(title == "" || contents == "")
+      msg = Message.create(:title => title, :contents => contents, :sent_at => Time.now, :sender => @user, :recipient => @item.user, :item => @item)
+      @user.sent_messages << msg
+      @user.save
+      @item.user.recieved_messages << msg
+      @item.user.save
+      @item.messages << msg
+      @item.save
+      haml :item
+    else
+      @msg = "Error leaving message"
+      haml :item
+    end
+  end
+
   post '/items/bid/:item_id' do
     @item = Item.first(:item_id => Integer(params[:item_id]))
     begin
