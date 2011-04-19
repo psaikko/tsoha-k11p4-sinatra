@@ -1,8 +1,8 @@
 %p 
-- if @name != nil
-  %p= "Welcome " + @name
+- if @user != nil
+  %p Welcome #{@user.name}
 %h2 Auction listings:
-%table.items{:border => "1"}
+%table
   %tr
     %th Item name
     %th Owner
@@ -15,6 +15,9 @@
       %td #{item.user.name}
       %td #{item.expires_at.to_s}
       %td #{item.current_price}
+      - if !@user.nil? && @user.admin
+        %td 
+          %a{:href => "/items/delete/" + item.item_id.to_s} [Delete]
 %h3 Registered users:
 - @users.each do |user|
   #{user.name}

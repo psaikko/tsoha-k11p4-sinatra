@@ -16,9 +16,13 @@ class Tsoha < Sinatra::Base
   set :public, File.dirname(__FILE__) + "/public"
   enable :sessions
 
+  if !User.exists("admin")
+    User.create(:name => "admin", :password => "admin", :admin => true)
+  end
+
   before do
     if session['id'] != nil
-      @name = User.first(:user_id => session['id']).name
+      @user = User.first(:user_id => session['id'])
     end
   end
 
@@ -41,6 +45,11 @@ class Tsoha < Sinatra::Base
       @msg = "Invalid username or password"
       haml :login
     end
+  end
+
+  get '/logout' do
+    session['id'] = nil
+    redirect '/'
   end
 
   get '/register' do
@@ -89,11 +98,6 @@ class Tsoha < Sinatra::Base
     end
   end
 
-  get '/logout' do
-    session['id'] = nil
-    redirect '/'
-  end
-
   get '/items/:item_id' do
     @item = Item.first(:item_id => Integer(params[:item_id]))
     if @item == nil
@@ -104,7 +108,13 @@ class Tsoha < Sinatra::Base
     end
   end
 
-  post '/bid/:item_id' do
+  get '/items/delete/:item_id' do
+    del_item = Item.first(:item_id => Integer(params[:item_id]))
+    del_item.destroy
+    redirect '/'
+  end
+
+  post '/items/bid/:item_id' do
     @item = Item.first(:item_id => Integer(params[:item_id]))
     begin
       price = Float(params[:amount])
@@ -132,5 +142,4 @@ class Tsoha < Sinatra::Base
       haml :item
     end   
   end
-
 end
