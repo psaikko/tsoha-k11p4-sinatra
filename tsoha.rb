@@ -21,7 +21,7 @@ class Tsoha < Sinatra::Base
   end
 
   before do
-    if session['id'] != nil
+    if session['id']
       @user = User.first(:user_id => session['id'])
     end
   end
@@ -38,7 +38,7 @@ class Tsoha < Sinatra::Base
 
   post '/login' do
     @user = User.first(:name => params[:username], :password => params[:password])
-    if @user != nil
+    if @user
       session['id'] = @user.user_id
       redirect '/'
     else
@@ -57,7 +57,7 @@ class Tsoha < Sinatra::Base
   end
 
   post '/register' do
-    if User.exists(params[:username])
+    if User.exists?(params[:username])
       @msg = "Username taken"
       haml :register
     else
@@ -73,7 +73,7 @@ class Tsoha < Sinatra::Base
   end
 
   get '/listitem' do
-    if session['id'] != nil
+    if session['id']
       haml :listitem
     else
       redirect '/'
@@ -88,7 +88,7 @@ class Tsoha < Sinatra::Base
       haml :listitem
     end
     
-    if params[:name] == nil
+    if params[:name].nil?
       @msg = "Name unspecified"
       haml :listitem    
     else
@@ -100,7 +100,7 @@ class Tsoha < Sinatra::Base
 
   get '/items/:item_id' do
     @item = Item.first(:item_id => Integer(params[:item_id]))
-    if @item == nil
+    if @item
       @msg = "Item not found"
       haml :index
     else    
@@ -142,12 +142,12 @@ class Tsoha < Sinatra::Base
       haml :item
     end
     
-    if price == nil
+    if price.nil?
       @msg = "Must specify a price"
       haml :item
     end
     
-    if price != nil && price <= @item.current_price
+    if price && price <= @item.current_price
       @msg = "Bid too small"
       haml :item
     else

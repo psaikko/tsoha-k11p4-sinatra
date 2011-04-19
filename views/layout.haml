@@ -8,10 +8,10 @@
       %a{:href => "/login"} [Login] 
       %a{:href => "/register"} [Register]
       %a{:href => "/"} [Main Page]
-      - if @user != nil
+      - if @user
         %a{:href => "/logout"} [Logout]
         %a{:href => "/listitem"} [Add Item]
     %div
-      - if @msg != nil 
+      - if @msg
         %p.error= @msg
       =yield

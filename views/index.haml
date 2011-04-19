@@ -1,5 +1,4 @@
-%p 
-- if @user != nil
+- if @user
   %p Welcome #{@user.name}
 %h2 Auction listings:
 %table
@@ -9,15 +8,16 @@
     %th Expires
     %th Current price
   - @items.each do |item|
-    %tr
-      %td 
-        %a{:href => "/items/" + item.item_id.to_s} #{item.name}
-      %td #{item.user.name}
-      %td #{item.expires_at.to_s}
-      %td #{item.current_price}
-      - if !@user.nil? && @user.admin
+    - if !item.expired
+      %tr
         %td 
-          %a{:href => "/items/delete/" + item.item_id.to_s} [Delete]
+          %a{:href => "/items/" + item.item_id.to_s} #{item.name}
+        %td #{item.user.name}
+        %td #{item.expires_at.to_s}
+        %td #{item.current_price}
+        - if @user && @user.admin
+          %td 
+            %a{:href => "/items/delete/" + item.item_id.to_s} [Delete]
 %h3 Registered users:
 - @users.each do |user|
   #{user.name}

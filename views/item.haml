@@ -5,24 +5,27 @@
 %h3 Sold by:
 #{@item.user.name}
 %h3 Bids:
-%table
-  %tr
-    %th Amount
-    %th Bidder
-    %th Time
-  - @item.bids.all(:order => [:amount.desc]).each do |bid|
+- if @item.bids.count > 0
+  %table
     %tr
-      %td #{bid.amount.to_s}
-      %td #{bid.user.name}
-      %td #{bid.made_at}
+      %th Amount
+      %th Bidder
+      %th Time
+    - @item.bids.all(:order => [:amount.desc]).each do |bid|
+      %tr
+        %td #{bid.amount.to_s}
+        %td #{bid.user.name}
+        %td #{bid.made_at}
+- else
+  %p No bids to display
 %h3 Current price: #{@item.current_price}
-- if !@user.nil? && !@user.name.nil?
+- if @user
   %p Make a bid:
   %form{:method => "post", :action => "/items/bid/" + @item.item_id.to_s}
     %input{:type => "text", :width => "10", :name => "amount"}
     %p
       %input{:type => "submit", :value => "Bid!"}
-
+  
 %h3 Messages
 - if @item.messages.count > 0
   %table
@@ -38,10 +41,10 @@
       %tr
         %td
         %td{:colspan => "2"} #{msg.contents}
--else
+- else
   %p No messages to display
       
-- if !@user.nil? && !@user.name.nil?
+- if @user
   %h3 Leave a message
   %p Title:
   %form{:method => "post", :action => "/items/msg/" + @item.item_id.to_s}

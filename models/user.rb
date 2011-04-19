@@ -14,8 +14,8 @@ class User
   has n, :items
   has n, :bids
 
-  def self.exists(username)
-    self.first(:name => username) != nil
+  def self.exists?(username)
+    self.first(:name => username)
   end
 end
 
