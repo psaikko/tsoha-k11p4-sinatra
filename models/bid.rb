@@ -5,7 +5,7 @@ require 'dm-migrations'
 class Bid
   include DataMapper::Resource
   property :bid_id, Serial, :key => true
-  property :amount, Integer 
+  property :amount, Float 
   property :made_at, Time
   belongs_to :user
   belongs_to :item
@@ -22,5 +22,9 @@ class Bid
       return (age / 3600.0).round.to_s + " hours ago"
     end
     (age / 86400.0).round.to_s + " days ago"
+  end
+  
+  def amount_round
+    ((amount * 100).round() / 100.0)
   end
 end

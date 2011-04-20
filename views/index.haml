@@ -2,12 +2,24 @@
   %p Welcome #{@user.name}
 %h2 Auction listings:
 - if @items.count > 0
+  %form{:method => "post", :action => "/"}
+    Sort:
+    %select{:name => "sort"}
+      %option Item name
+      %option Seller
+      %option Time left
+      %option Current price
+    Search: 
+    %input{:type => "text", :size => "20", :maxlength => 20, :name => "query"}
+    %input{:type => "checkbox", :name => "reverse", :value => "reverse"} Reverse
+    %input{:type => "submit", :value => "Go"}
   %table
     %tr
       %th Item name
-      %th Owner
-      %th Expires in
+      %th Seller
+      %th Time left
       %th Current price
+      %th Highest bidder
     - @items.each do |item|
       - if !item.expired
         %tr
@@ -16,6 +28,7 @@
           %td #{h item.user.name}
           %td #{item.time_left_s}
           %td #{item.current_price}
+          %td #{item.highest_bidder}
           - if @user && @user.admin
             %td 
               %a{:href => "/items/delete/" + item.item_id.to_s} [Delete]

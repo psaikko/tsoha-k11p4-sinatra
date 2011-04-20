@@ -13,7 +13,7 @@
       %th Time
     - @item.bids.all(:order => [:amount.desc]).each do |bid|
       %tr
-        %td #{bid.amount.to_s}
+        %td #{bid.amount_round}
         %td #{h bid.user.name}
         %td #{bid.age_s}
 - else
@@ -22,7 +22,7 @@
 - if @user && @user != @item.user
   %p Make a bid:
   %form{:method => "post", :action => "/items/bid/" + @item.item_id.to_s}
-    %input{:type => "text", :width => "10", :name => "amount"}
+    %input{:type => "text", :size => "20", :maxlength => 20, :name => "amount"}
     %p
       %input{:type => "submit", :value => "Bid!"}
   
@@ -48,7 +48,7 @@
   %h3 Leave a message
   %p Title:
   %form{:method => "post", :action => "/items/msg/" + @item.item_id.to_s}
-    %input{:type => "text", :width => "10", :name => "title"}
+    %input{:type => "text", :size => "20", :maxlength => 20, :name => "title"}
     %p
       %textarea{:rows => 5, :cols => 30, :name => "contents"}
     %p

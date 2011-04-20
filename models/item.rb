@@ -19,7 +19,15 @@ class Item
     if bids.count == 0
       start_price
     else
-      bids.max(:amount)
+      bids.all(:order => [:amount.desc]).first.amount_round
+    end
+  end
+  
+  def highest_bidder
+    if bids.count > 0
+      bids.all(:order => [:amount.desc]).first.user.name
+    else
+      "No bids"
     end
   end
   
