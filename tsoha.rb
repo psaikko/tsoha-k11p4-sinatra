@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'sinatra'
 require 'haml'
+require 'rack-flash'
 
 require 'config/init'
 
@@ -15,8 +16,9 @@ DataMapper.auto_upgrade!
 class Tsoha < Sinatra::Base
   set :public, File.dirname(__FILE__) + "/public"
   enable :sessions
+  use Rack::Flash
 
-  if !User.exists("admin")
+  if !User.exists?("admin")
     User.create(:name => "admin", :password => "admin", :admin => true)
   end
 
@@ -42,8 +44,8 @@ class Tsoha < Sinatra::Base
       session['id'] = @user.user_id
       redirect '/'
     else
-      @msg = "Invalid username or password"
-      haml :login
+      flash[:error] = "Invalid username or password"
+      redirect '/login'
     end
   end
 
@@ -58,16 +60,16 @@ class Tsoha < Sinatra::Base
 
   post '/register' do
     if User.exists?(params[:username])
-      @msg = "Username taken"
-      haml :register
+      flash[:error] = "Username taken"
+      redirect '/register'
     else
-      if params[:password] == params[:password2]
+      if params[:password] == "" || params[:password] == params[:password2]
         user = User.create(:name => params[:username], :password => params[:password])
         session['id'] = user.user_id
         redirect '/'
       else
-        @msg = "Passwords do not match"
-        haml :register
+        flash[:error] = "Passwords do not match or empty"
+        redirect '/register'
       end
     end
   end
@@ -84,13 +86,13 @@ class Tsoha < Sinatra::Base
     begin
       @price = Float(params[:price])
     rescue ArgumentError
-      @msg = "Invalid price"
-      haml :listitem
+      flash[:error] = "Invalid price"
+      redirect '/listitem'
     end
     
     if params[:name].nil?
-      @msg = "Name unspecified"
-      haml :listitem    
+      flash[:error] = "Item must have a name"
+      redirect '/listitem' 
     else
       user = User.first(:user_id => session['id'])
       Item.create(:name => params[:name], :start_price => params[:price], :text => params[:description], :created_at => Time.now, :expires_at => Time.now + 604800, :user => user)
@@ -101,11 +103,11 @@ class Tsoha < Sinatra::Base
   get '/items/:item_id' do
     @item = Item.first(:item_id => Integer(params[:item_id]))
     if @item
-      @msg = "Item not found"
-      haml :index
-    else    
       haml :item
-    end
+    else
+      flash[:error] = "Could not find item"
+      redirect '/'
+    end   
   end
 
   get '/items/delete/:item_id' do
@@ -128,8 +130,8 @@ class Tsoha < Sinatra::Base
       @item.save
       haml :item
     else
-      @msg = "Error leaving message"
-      haml :item
+      flash[:error] = "Message must have title and contents"
+      redirect '/items/' + @item.item_id.to_s
     end
   end
 
@@ -138,18 +140,18 @@ class Tsoha < Sinatra::Base
     begin
       price = Float(params[:amount])
     rescue ArgumentError
-      @msg = "Invalid bid amount"
-      haml :item
+      flash[:error] = "Invalid bid amount"
+      redirect '/items/' + @item.item_id.to_s
     end
     
     if price.nil?
-      @msg = "Must specify a price"
-      haml :item
+      flash[:error] = "Must specify bid amount"
+      redirect '/items/' + @item.item_id.to_s
     end
     
     if price && price <= @item.current_price
-      @msg = "Bid too small"
-      haml :item
+      flash[:error] = "Bid too small"
+      redirect '/items/' + @item.item_id.to_s
     else
       user = User.first(:user_id => session['id'])
       bid = Bid.create(:amount => price, :made_at => Time.now, :user => user, :item => @item)
@@ -157,8 +159,8 @@ class Tsoha < Sinatra::Base
       @item.save
       user.bids << bid
       user.save
-      @msg = "Bid successful!"
-      haml :item
+      flash[:success] = "Bid successful"
+      redirect '/items/' + @item.item_id.to_s
     end   
   end
 end
