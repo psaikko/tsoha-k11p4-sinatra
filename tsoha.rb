@@ -129,7 +129,7 @@ class Tsoha < Sinatra::Base
       @item.user.save
       @item.messages << msg
       @item.save
-      haml :item
+      redirect @item.url
     else
       flash[:error] = "Message must have title and contents"
       redirect @item.url

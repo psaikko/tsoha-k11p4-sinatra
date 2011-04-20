@@ -6,7 +6,7 @@
     %tr
       %th Item name
       %th Owner
-      %th Expires
+      %th Expires in
       %th Current price
     - @items.each do |item|
       - if !item.expired
@@ -14,7 +14,7 @@
           %td 
             %a{:href => "/items/" + item.item_id.to_s} #{item.name}
           %td #{item.user.name}
-          %td #{item.expires_at.to_s}
+          %td #{item.time_left_s}
           %td #{item.current_price}
           - if @user && @user.admin
             %td 

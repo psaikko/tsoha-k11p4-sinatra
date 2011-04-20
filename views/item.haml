@@ -15,7 +15,7 @@
       %tr
         %td #{bid.amount.to_s}
         %td #{bid.user.name}
-        %td #{bid.made_at}
+        %td #{bid.age_s}
 - else
   %p No bids to display
 %h3 Current price: #{@item.current_price}
@@ -30,12 +30,12 @@
 - if @item.messages.count > 0
   %table
     %tr
-      %th Date
+      %th Sent
       %th Sender
       %th Title
     - @item.messages.all(:order => [:sent_at.asc]).each do |msg|
       %tr
-        %td #{msg.sent_at.to_s}
+        %td #{msg.age_s}
         %td #{msg.sender.name}
         %td #{msg.title}
       %tr

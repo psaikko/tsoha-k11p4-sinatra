@@ -23,6 +23,24 @@ class Item
     end
   end
   
+  def time_left_s
+    if expired
+      "Item expired"
+    else
+      left = expires_at.to_f - Time.now.to_f
+      if left < 60
+        return left.round.to_s + " seconds"
+      end
+      if left < 3600
+        return (left / 60.0).round.to_s + " minutes"
+      end
+      if left < 86400
+        return (left / 3600.0).round.to_s + " hours"
+      end
+      (left / 86400.0).round.to_s + " days"
+    end
+  end
+  
   def expired
     Time.now > expires_at
   end
