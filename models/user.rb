@@ -10,7 +10,7 @@ class User
   property :admin, Boolean, :default => false
 
   has n, :sent_messages, 'Message'
-  has n, :recieved_messages, 'Message'
+  has n, :received_messages, 'Message'
   has n, :items
   has n, :bids
 

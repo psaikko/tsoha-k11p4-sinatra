@@ -85,7 +85,7 @@ class Tsoha < Sinatra::Base
 
   post '/listitem' do
     begin
-      @price = Float(params[:price])
+      price = Float(params[:price])
     rescue ArgumentError
       flash[:error] = "Invalid price"
       redirect '/listitem'
@@ -125,43 +125,48 @@ class Tsoha < Sinatra::Base
       msg = Message.create(:title => title, :contents => contents, :sent_at => Time.now, :sender => @user, :recipient => @item.user, :item => @item)
       @user.sent_messages << msg
       @user.save
-      @item.user.recieved_messages << msg
+      @item.user.received_messages << msg
       @item.user.save
       @item.messages << msg
       @item.save
       haml :item
     else
       flash[:error] = "Message must have title and contents"
-      redirect '/items/' + @item.item_id.to_s
+      redirect @item.url
     end
   end
 
   post '/items/bid/:item_id' do
     @item = Item.first(:item_id => Integer(params[:item_id]))
-    begin
-      price = Float(params[:amount])
-    rescue ArgumentError
-      flash[:error] = "Invalid bid amount"
-      redirect '/items/' + @item.item_id.to_s
+    if @user != @item.user
+      begin
+        price = Float(params[:amount])
+      rescue ArgumentError
+        flash[:error] = "Invalid bid amount"
+        redirect @item.url
+      end
+      
+      if price.nil?
+        flash[:error] = "Must specify bid amount"
+        redirect @item.url
+      end
+      
+      if price <= @item.current_price
+        flash[:error] = "Bid too small"
+        redirect @item.url
+      else
+        user = User.first(:user_id => session['id'])
+        bid = Bid.create(:amount => params[:amount], :made_at => Time.now, :user => user, :item => @item)
+        @item.bids << bid
+        @item.save
+        user.bids << bid
+        user.save
+        flash[:success] = "Bid successful"
+        redirect @item.url
+      end
+    else 
+      flash[:error] = "Cannot bid on own item"
+      redirect @item.url
     end
-    
-    if price.nil?
-      flash[:error] = "Must specify bid amount"
-      redirect '/items/' + @item.item_id.to_s
-    end
-    
-    if price && price <= @item.current_price
-      flash[:error] = "Bid too small"
-      redirect '/items/' + @item.item_id.to_s
-    else
-      user = User.first(:user_id => session['id'])
-      bid = Bid.create(:amount => price, :made_at => Time.now, :user => user, :item => @item)
-      @item.bids << bid
-      @item.save
-      user.bids << bid
-      user.save
-      flash[:success] = "Bid successful"
-      redirect '/items/' + @item.item_id.to_s
-    end   
   end
 end

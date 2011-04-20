@@ -26,4 +26,8 @@ class Item
   def expired
     Time.now > expires_at
   end
+  
+  def url
+    '/items/' + item_id.to_s
+  end
 end
