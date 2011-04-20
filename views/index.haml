@@ -1,23 +1,26 @@
 - if @user
   %p Welcome #{@user.name}
 %h2 Auction listings:
-%table
-  %tr
-    %th Item name
-    %th Owner
-    %th Expires
-    %th Current price
-  - @items.each do |item|
-    - if !item.expired
-      %tr
-        %td 
-          %a{:href => "/items/" + item.item_id.to_s} #{item.name}
-        %td #{item.user.name}
-        %td #{item.expires_at.to_s}
-        %td #{item.current_price}
-        - if @user && @user.admin
+- if @items.count > 0
+  %table
+    %tr
+      %th Item name
+      %th Owner
+      %th Expires
+      %th Current price
+    - @items.each do |item|
+      - if !item.expired
+        %tr
           %td 
-            %a{:href => "/items/delete/" + item.item_id.to_s} [Delete]
+            %a{:href => "/items/" + item.item_id.to_s} #{item.name}
+          %td #{item.user.name}
+          %td #{item.expires_at.to_s}
+          %td #{item.current_price}
+          - if @user && @user.admin
+            %td 
+              %a{:href => "/items/delete/" + item.item_id.to_s} [Delete]
+- else
+  %p No items to display
 %h3 Registered users:
 - @users.each do |user|
   #{user.name}

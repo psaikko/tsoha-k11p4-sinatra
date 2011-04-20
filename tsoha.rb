@@ -11,7 +11,7 @@ require 'models/user'
 require 'models/message'
 
 DataMapper.finalize
-DataMapper.auto_upgrade!
+DataMapper.auto_migrate!
 
 class Tsoha < Sinatra::Base
   set :public, File.dirname(__FILE__) + "/public"
@@ -19,7 +19,7 @@ class Tsoha < Sinatra::Base
   use Rack::Flash
 
   if !User.exists?("admin")
-    User.create(:name => "admin", :password => "admin", :admin => true)
+    User.create(:name => "admin", :password => Digest::SHA1.hexdigest("admin"), :admin => true)
   end
 
   before do
@@ -39,7 +39,7 @@ class Tsoha < Sinatra::Base
   end
 
   post '/login' do
-    @user = User.first(:name => params[:username], :password => params[:password])
+    @user = User.authenticate(params[:username], params[:password])
     if @user
       session['id'] = @user.user_id
       redirect '/'
@@ -63,9 +63,10 @@ class Tsoha < Sinatra::Base
       flash[:error] = "Username taken"
       redirect '/register'
     else
-      if params[:password] == "" || params[:password] == params[:password2]
-        user = User.create(:name => params[:username], :password => params[:password])
+      if params[:password].length > 0 && params[:password] == params[:password2]
+        user = User.register(params[:username], params[:password])
         session['id'] = user.user_id
+        flash[:success] = "Registration successful"
         redirect '/'
       else
         flash[:error] = "Passwords do not match or empty"
