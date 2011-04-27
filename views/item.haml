@@ -4,6 +4,8 @@
 %p= h @item.text
 %h3 Sold by:
 #{h @item.user.name}
+%h3 Time left:
+#{@item.time_left_s}
 %h3 Bids:
 - if @item.bids.count > 0
   %table
@@ -19,7 +21,7 @@
 - else
   %p No bids to display
 %h3 Current price: #{@item.current_price}
-- if @user && @user != @item.user
+- if @user && @user != @item.user && !@item.expired
   %p Make a bid:
   %form{:method => "post", :action => "/items/bid/" + @item.item_id.to_s}
     %input{:type => "text", :size => "20", :maxlength => 20, :name => "amount"}
@@ -44,7 +46,7 @@
 - else
   %p No messages to display
       
-- if @user
+- if @user && !@item.expired
   %h3 Leave a message
   %p Title:
   %form{:method => "post", :action => "/items/msg/" + @item.item_id.to_s}

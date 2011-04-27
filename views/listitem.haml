@@ -6,6 +6,19 @@
   %input{:type => "text", :size => "20", :maxlength => 20, :name => "price"}
   %h3 Item description
   %textarea{:rows => 10, :cols => 40, :name => "description"}
+  %h3 Expires in
+  %select{:name => "days"}
+    -for i in 0..7
+      %option #{i}
+  Days 
+  %select{:name => "hours"}
+    -for i in 0..23
+      %option #{i}
+  Hours
+  %select{:name => "minutes"}
+    -for i in 1..59
+      %option #{i}
+  Minutes
   %p
     %input{:type => "submit", :value => "Create"}
 

@@ -31,9 +31,11 @@ class Tsoha < Sinatra::Base
 
   get '/' do
     if flash[:query]
-      @items = Item.all(:name.like => "%" + flash[:query] + "%")
+      @query = flash[:query]
+      @items = Item.all(:name.like => "%" + flash[:query] + "%", :expires_at.gt => Time.now)
     else
-      @items = Item.all(:order => [:expires_at.asc])
+      @query = ""
+      @items = Item.all(:expires_at.gt => Time.now)
     end
     
     case flash[:sort]
@@ -119,12 +121,23 @@ class Tsoha < Sinatra::Base
       redirect '/listitem'
     end
     
-    if params[:name].nil?
+    if price < 0
+      flash[:error] = "Invalid price: " + price.to_s
+      redirect '/listitem'
+    end
+      
+    if params[:name] == ""
       flash[:error] = "Item must have a name"
       redirect '/listitem' 
     else
+      days = Integer(params[:days])
+      hours = Integer(params[:hours])
+      minutes = Integer(params[:minutes])
+      seconds = minutes * 60 + hours * 3600 + days * 86400;
+      
       user = User.first(:user_id => session['id'])
-      Item.create(:name => params[:name], :start_price => params[:price], :text => params[:description], :created_at => Time.now, :expires_at => Time.now + 604800, :user => user)
+      Item.create(:name => params[:name], :start_price => price, :text => params[:description], :created_at => Time.now, :expires_at => Time.now + seconds, :user => user)
+      flash[:success] = "Item created!"
       redirect '/'
     end
   end

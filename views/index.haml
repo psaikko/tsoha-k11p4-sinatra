@@ -1,18 +1,18 @@
 - if @user
   %p Welcome #{@user.name}
 %h2 Auction listings:
+%form{:method => "post", :action => "/"}
+  Sort:
+  %select{:name => "sort"}
+    %option Item name
+    %option Seller
+    %option Time left
+    %option Current price
+  Search: 
+  %input{:type => "text", :size => "20", :maxlength => 20, :name => "query", :value => @query}
+  %input{:type => "checkbox", :name => "reverse", :value => "reverse"} Reverse
+  %input{:type => "submit", :value => "Go"}
 - if @items.count > 0
-  %form{:method => "post", :action => "/"}
-    Sort:
-    %select{:name => "sort"}
-      %option Item name
-      %option Seller
-      %option Time left
-      %option Current price
-    Search: 
-    %input{:type => "text", :size => "20", :maxlength => 20, :name => "query"}
-    %input{:type => "checkbox", :name => "reverse", :value => "reverse"} Reverse
-    %input{:type => "submit", :value => "Go"}
   %table
     %tr
       %th Item name
