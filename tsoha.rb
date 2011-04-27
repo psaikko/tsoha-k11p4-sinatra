@@ -12,7 +12,7 @@ require 'models/message'
 require 'lib/helpers'
 
 DataMapper.finalize
-DataMapper.auto_migrate!
+DataMapper.auto_upgrade!
 
 class Tsoha < Sinatra::Base
   set :public, File.dirname(__FILE__) + "/public"
