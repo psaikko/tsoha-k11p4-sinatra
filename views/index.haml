@@ -21,17 +21,16 @@
       %th Current price
       %th Highest bidder
     - @items.each do |item|
-      - if !item.expired
-        %tr
+      %tr
+        %td 
+          %a{:href => "/items/" + item.item_id.to_s} #{h item.name}
+        %td #{h item.user.name}
+        %td #{item.time_left_s}
+        %td #{item.current_price}
+        %td #{item.highest_bidder}
+        - if @user && @user.admin
           %td 
-            %a{:href => "/items/" + item.item_id.to_s} #{h item.name}
-          %td #{h item.user.name}
-          %td #{item.time_left_s}
-          %td #{item.current_price}
-          %td #{item.highest_bidder}
-          - if @user && @user.admin
-            %td 
-              %a{:href => "/items/delete/" + item.item_id.to_s} [Delete]
+            %a{:href => "/items/delete/" + item.item_id.to_s} [Delete]
 - else
   %p No items to display
 %h3 Registered users:

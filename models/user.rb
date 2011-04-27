@@ -9,10 +9,10 @@ class User
   property :password, String, :required => true
   property :admin, Boolean, :default => false
 
-  has n, :sent_messages, 'Message'
-  has n, :received_messages, 'Message'
+  has n, :sent_messages, 'Message', :order => [:sent_at.desc]
+  has n, :received_messages, 'Message', :order => [:sent_at.desc]
   has n, :items
-  has n, :bids
+  has n, :bids, :order => [:made_at.desc]
 
   def self.exists?(username)
     self.first(:name => username)

@@ -11,8 +11,6 @@ class Message
   belongs_to :sender, 'User'
   belongs_to :recipient, 'User'
   belongs_to :item, :required => false
-  belongs_to :message, :required => false
-  has n, :replies, 'Message'
   
   def age_s
     age = Time.now.to_f - sent_at.to_f

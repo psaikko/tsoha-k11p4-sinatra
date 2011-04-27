@@ -1,0 +1,63 @@
+%h2 #{h(@user.name) + "'s page"} 
+%h3 Your auctions
+- if @user.items.count > 0
+  %table
+    %tr
+      %th Item name
+      %th Time left
+      %th Current price
+      %th Highest bidder
+    - @user.items.each do |item|
+      %tr
+        %td 
+          %a{:href => "/items/" + item.item_id.to_s} #{h item.name}
+        %td #{item.time_left_s}
+        %td #{item.current_price}
+        %td #{item.highest_bidder}
+- else
+  %p No items to display
+  
+%h3 Messages to you
+- if @user.received_messages.count > 0
+  %table
+    %tr
+      %th Sent
+      %th Sender
+      %th Title
+      %th Item
+    - @user.received_messages.all.each do |msg|
+      %tr
+        %td #{msg.age_s}
+        %td #{h msg.sender.name}
+        %td #{h msg.title}
+        %td 
+          %a{:href => "/items/" + msg.item.item_id.to_s} #{h item.name}
+      %tr
+        %td
+        %td{:colspan => "3"} #{msg.contents}
+- else
+  %p No messages to display
+  
+%h3 Your bids
+- if @user.bids.count > 0
+  %table
+    %tr
+      %th Amount
+      %th Item
+      %th Time made
+      %th Item expires in
+      %th Highest bid?
+    - @user.bids.all.each do |bid|
+      %tr
+        %td #{bid.amount_round}
+        %td
+          %a{:href => "/items/" + bid.item.item_id.to_s} #{h bid.item.name}
+        %td #{bid.age_s}
+        %td #{bid.item.time_left_s}
+        %td
+          -if bid.item.highest_bidder == @user.name
+            .green Yes
+          -else
+            .red No
+- else
+  %p No bids to display

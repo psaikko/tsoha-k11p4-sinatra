@@ -11,21 +11,21 @@ class Item
   property :text, Text
   property :created_at, Time
   property :expires_at, Time
-  has n, :bids
-  has n, :messages
+  has n, :bids, :order => [:amount.desc]
+  has n, :messages, :order => [:sent_at.desc]
   belongs_to :user
   
   def current_price
     if bids.count == 0
       start_price
     else
-      bids.all(:order => [:amount.desc]).first.amount_round
+      bids.all.first.amount_round
     end
   end
   
   def highest_bidder
     if bids.count > 0
-      bids.all(:order => [:amount.desc]).first.user.name
+      h bids.all.first.user.name
     else
       "No bids"
     end

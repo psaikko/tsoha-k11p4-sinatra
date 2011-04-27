@@ -13,7 +13,7 @@
       %th Amount
       %th Bidder
       %th Time
-    - @item.bids.all(:order => [:amount.desc]).each do |bid|
+    - @item.bids.all.each do |bid|
       %tr
         %td #{bid.amount_round}
         %td #{h bid.user.name}
@@ -35,7 +35,7 @@
       %th Sent
       %th Sender
       %th Title
-    - @item.messages.all(:order => [:sent_at.asc]).each do |msg|
+    - @item.messages.all.each do |msg|
       %tr
         %td #{msg.age_s}
         %td #{h msg.sender.name}

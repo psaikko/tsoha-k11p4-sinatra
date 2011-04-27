@@ -11,6 +11,7 @@
       - if @user
         %a{:href => "/logout"} [Logout]
         %a{:href => "/listitem"} [Add Item]
+        %a{:href => "/user"} [Account page]
     %div
       - if flash[:error]
         %p.error= flash[:error]

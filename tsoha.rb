@@ -105,6 +105,14 @@ class Tsoha < Sinatra::Base
     end
   end
 
+  get '/user' do
+    if @user
+      haml :user
+    else
+      redirect '/'
+    end
+  end
+
   get '/listitem' do
     if session['id']
       haml :listitem
