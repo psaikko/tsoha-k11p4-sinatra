@@ -30,38 +30,33 @@ class Tsoha < Sinatra::Base
   end
 
   get '/' do
-    if flash[:query]
-      @query = flash[:query]
-      @items = Item.all(:name.like => "%" + flash[:query] + "%", :expires_at.gt => Time.now)
-    else
-      @query = ""
-      @items = Item.all(:expires_at.gt => Time.now)
-    end
-    
-    case flash[:sort]
-    when "Item name"
-      @items = @items.all(:order => [:name.asc])
-    when "Seller"
-      @items = @items.all.sort_by{ |item| item.user.name }
-    when "Time left"
-      @items = @items.all(:order => [:expires_at.desc])
-    when "Current price"
-      @items = @items.all.sort_by{ |item| item.current_price }
-    end
-    
-    if flash[:reverse] == "reverse"
-      @items.reverse!
-    end
-    
+    @query = ""
+    @items = Item.all(:expires_at.gt => Time.now)
     @users = User.all
     haml :index
   end
   
   post '/' do
-    flash[:query] = params[:query]
-    flash[:sort] = params[:sort]
-    flash[:reverse] = params[:reverse]
-    redirect '/'
+    @query = params[:query]
+    @items = Item.all(:name.like => "%" + @query + "%", :expires_at.gt => Time.now)
+    
+    case params[:sort]
+    when "Item name"
+      @items = @items.all(:order => [:name.asc])
+    when "Seller"
+      @items = @items.all.sort_by{ |item| item.user.name }
+    when "Time left"
+      @items = @items.all(:order => [:expires_at.asc])
+    when "Current price"
+      @items = @items.all.sort_by{ |item| item.current_price }
+    end
+    
+    if params[:reverse] == "reverse"
+      @items.reverse!
+    end
+    
+    @users = User.all
+    haml :index
   end
 
   get '/login' do

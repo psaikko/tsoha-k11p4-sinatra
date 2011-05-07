@@ -28,7 +28,7 @@
         %td #{item.time_left_s}
         %td #{item.current_price}
         %td #{item.highest_bidder}
-        - if @user && @user.admin
+        - if is_admin? @user
           %td 
             %a{:href => "/items/delete/" + item.item_id.to_s} [Delete]
 - else
