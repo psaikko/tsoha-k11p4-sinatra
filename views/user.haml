@@ -31,7 +31,7 @@
         %td #{h msg.sender.name}
         %td #{h msg.title}
         %td 
-          %a{:href => "/items/" + msg.item.item_id.to_s} #{h item.name}
+          %a{:href => "/items/" + msg.item.item_id.to_s} #{h msg.item.name}
       %tr
         %td
         %td{:colspan => "3"} #{msg.contents}
